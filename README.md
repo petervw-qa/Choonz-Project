@@ -1,6 +1,6 @@
 # QA Choonz Final Project 
 
-Coverage: 92.3%
+Test Line Coverage: 92.3%
 
 ## Introductions
 
