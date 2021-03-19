@@ -1,5 +1,7 @@
 # QA Choonz Final Project 
 
+Coverage: 92.3%
+
 ## Introductions
 
 This project aims to be a simple CRUD music application that allows for editing and 
@@ -70,11 +72,67 @@ are labelled with *UnitTest and can be run within your IDE as long
 as you have JUnit5 and mockito installed. Coverage can be generated
 using the JaCoCo plugin (IntelliJ and Eclipse have JaCoCo built in).
 
+##### Unit Test Examples
+
+```
+
+  @Test
+	public void testCreate() throws Exception {
+		AlbumDTO testAlbumDto = mapToDTO(testAlbum);
+
+		when(this.service.create(1L, 1L, testAlbumDto)).thenReturn(this.mapToDTO(testAlbum));
+
+		assertEquals(new ResponseEntity<AlbumDTO>(this.mapToDTO(testAlbum), HttpStatus.CREATED),
+				(this.controller.create(testAlbumDto, 1L, 1L)));
+
+		verify(this.service, atLeastOnce()).create(1L, 1L, testAlbumDto);
+	}
+
+	@Test
+	public void testReadAll() throws Exception {
+		when(this.service.read()).thenReturn(listOfAlbum.stream().map(this::mapToDTO).collect(Collectors.toList()));
+
+		ResponseEntity<List<AlbumDTO>> expected = new ResponseEntity<List<AlbumDTO>>(
+				listOfAlbum.stream().map(this::mapToDTO).collect(Collectors.toList()), HttpStatus.OK);
+
+		assertEquals((expected), (this.controller.read()));
+
+		verify(this.service, atLeastOnce()).read();
+	}
+
+```
+
 #### Integration Tests
 Integration tests allow us to investigate how classes interact with
 other object, in this case I have used integration testing to see how
 the controller class behaves. This test can also be run in an IDE as
 long as the dependencies have been met, they are labelled as *IntegrationTest.
+
+##### Integration Test Examples
+
+```
+
+  @Test
+	void testCreate() throws Exception {
+		AlbumDTO testAlbum = mapToDTO(new Album(1L, "Scorpion", "txt"));
+		testAlbum.setId(1L);
+		String albumToJSON = this.jsonifier.writeValueAsString(testAlbum);
+		RequestBuilder rB = post(URI + "/create/1/1").contentType(MediaType.APPLICATION_JSON).content(albumToJSON)
+				.accept(MediaType.APPLICATION_JSON);
+		ResultMatcher checkStatus = status().isCreated();
+		ResultMatcher checkBody = content().json(albumToJSON);
+		this.mvc.perform(rB).andExpect(checkStatus).andExpect(checkBody);
+	}
+
+	@Test
+	void testReadAll() throws Exception {
+		RequestBuilder rB = get(URI + "/read", List.of(Album_TEST_1));
+		ResultMatcher checkStatus = status().isOk();
+		this.mvc.perform(rB).andExpect(checkStatus);
+
+	}
+
+```
 
 #### Acceptance Test
 Acceptance tests show us whether our program behaves as it should
@@ -86,12 +144,51 @@ driver in the given script to be the representative driver for that browser (
 e.g. change ChromeDriver() to be FirefoxDriver()). You can then run the
 tests, a browser will pop-up, and the tests' logic will be simulated.
 
+##### Acceptance Test Examples
+
+```
+
+    @Before
+    public static void setUp() {
+        System.setProperty("webdriver.chrome.driver",
+                "src/test/resources/drivers/chrome/chromedriver.exe");
+
+        webDriver = new ChromeDriver();
+    }
+
+    @Given("I am on the home page")
+    public void iAmOnTheHomePage() {
+        webDriver.get("http://localhost:8082");
+    }
+
+    @Given("That I search for an album")
+    public void thatISearchForAnAlbum() throws InterruptedException {
+        // This function has to be called since a album needs an artist assigned to it
+        utils.createArtist();
+        utils.createGenre();
+        webElement = webDriver.findElement(By.id("select-bar"));
+        webElement.sendKeys("Album");
+        webElement = webDriver.findElement(By.id("search-button"));
+        webElement.click();
+    }
+
+    @When("I click the add link")
+    public void iClickTheAddLink() throws InterruptedException {
+        Thread.sleep(500);
+        webElement = webDriver.findElement(By.id("album-create-button"));
+        webElement.click();
+    }
+
+```
+
 #### System Tests
 System tests are usually used to judged how a system can handle with different
 types of stresses, whether they can recover and how quickly. We used Jmeter to run
 a variety of tests such as spike, load, soak and stress. These all test how the system
 reacts to the intense changes in user load or increases in user load. These tests are
 saved as a .jmx files in the test/ folder, and can be run with Jmeter.
+
+The system tests can be found in the `jmeter` folder following the directory: `/main/src/test/jmeter/choonz_load_and_spike.jmx`
 
 ## Built With
 
@@ -123,4 +220,5 @@ We use [SemVer](http://semver.org/) for versioning.
 - Team names and roles here, e.g. **Scrum Master**
 
 ## Acknowledgements
+Thank you to all members of Team Storm: [Arsalan](https://github.com/QA-ArsalanAsad), [Raimonds](https://github.com/RaimondsMezalsQA) and [Henry](https://github.com/QAHenryOliverEdwards) for making the experience smooth and enjoyable. Working with these great developers only further expanded my knowledge and brought many laughs along the journey.
 
