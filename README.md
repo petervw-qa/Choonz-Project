@@ -1,4 +1,4 @@
-# QA Choonz Final Project 
+# Choonz: Specialism Project - Client Web Application Testing
 
 Test Line Coverage: 92.3%
 
