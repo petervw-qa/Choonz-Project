@@ -76,7 +76,7 @@ using the JaCoCo plugin (IntelliJ and Eclipse have JaCoCo built in).
 
 ```
 
-  @Test
+  	@Test
 	public void testCreate() throws Exception {
 		AlbumDTO testAlbumDto = mapToDTO(testAlbum);
 
@@ -112,7 +112,7 @@ long as the dependencies have been met, they are labelled as *IntegrationTest.
 
 ```
 
-  @Test
+  	@Test
 	void testCreate() throws Exception {
 		AlbumDTO testAlbum = mapToDTO(new Album(1L, "Scorpion", "txt"));
 		testAlbum.setId(1L);
@@ -148,36 +148,36 @@ tests, a browser will pop-up, and the tests' logic will be simulated.
 
 ```
 
-    @Before
-    public static void setUp() {
-        System.setProperty("webdriver.chrome.driver",
-                "src/test/resources/drivers/chrome/chromedriver.exe");
+    	@Before
+    	public static void setUp() {
+        	System.setProperty("webdriver.chrome.driver",
+                	"src/test/resources/drivers/chrome/chromedriver.exe");
 
-        webDriver = new ChromeDriver();
-    }
+        	webDriver = new ChromeDriver();
+    	}
 
-    @Given("I am on the home page")
-    public void iAmOnTheHomePage() {
-        webDriver.get("http://localhost:8082");
-    }
+    	@Given("I am on the home page")
+    	public void iAmOnTheHomePage() {
+        	webDriver.get("http://localhost:8082");
+    	}
 
-    @Given("That I search for an album")
-    public void thatISearchForAnAlbum() throws InterruptedException {
-        // This function has to be called since a album needs an artist assigned to it
-        utils.createArtist();
-        utils.createGenre();
-        webElement = webDriver.findElement(By.id("select-bar"));
-        webElement.sendKeys("Album");
-        webElement = webDriver.findElement(By.id("search-button"));
-        webElement.click();
-    }
+    	@Given("That I search for an album")
+    	public void thatISearchForAnAlbum() throws InterruptedException {
+        	// This function has to be called since a album needs an artist assigned to it
+        	utils.createArtist();
+        	utils.createGenre();
+        	webElement = webDriver.findElement(By.id("select-bar"));
+        	webElement.sendKeys("Album");
+        	webElement = webDriver.findElement(By.id("search-button"));
+        	webElement.click();
+    	}
 
-    @When("I click the add link")
-    public void iClickTheAddLink() throws InterruptedException {
-        Thread.sleep(500);
-        webElement = webDriver.findElement(By.id("album-create-button"));
-        webElement.click();
-    }
+    	@When("I click the add link")
+    	public void iClickTheAddLink() throws InterruptedException {
+        	Thread.sleep(500);
+        	webElement = webDriver.findElement(By.id("album-create-button"));
+        	webElement.click();
+    	}
 
 ```
 
@@ -199,10 +199,10 @@ The system tests can be found in the `jmeter` folder following the directory: `/
 We use [SemVer](http://semver.org/) for versioning.
 
 ## Authors
-* Team Leader and Manager - [Arsalan Asad](https://github.com/QA-ArsalanAsad)
-* Back-end Developer and Non-functional tester - [Vaughan-Williams, Peter](https://github.com/petervw-qa)
+* Team Leader and Manager - [Asad, Arsalan](https://github.com/QA-ArsalanAsad)
+* Back-End Developer and Non-Functional Tester - [Vaughan-Williams, Peter](https://github.com/petervw-qa)
 * Test Lead - [Mezals, Raimonds](https://github.com/RaimondsMezalsQA)
-* Front-end Lead - [Henry Oliver-Edwards](https://github.com/QAHenryOliverEdwards) 
+* Front-End Lead - [Oliver-Edwards, Henry](https://github.com/QAHenryOliverEdwards) 
 
 ### Training Team
 
@@ -216,8 +216,11 @@ We use [SemVer](http://semver.org/) for versioning.
 - [**Piers Barber**](https://github.com/PCMBarber)
 
 ### Development Team
-
-- Team names and roles here, e.g. **Scrum Master**
+Same as Authors:
+* Team Leader and Manager - [Asad, Arsalan](https://github.com/QA-ArsalanAsad)
+* Back-End Developer and Non-Functional Tester - [Vaughan-Williams, Peter](https://github.com/petervw-qa)
+* Test Lead - [Mezals, Raimonds](https://github.com/RaimondsMezalsQA)
+* Front-End Lead - [Oliver-Edwards, Henry](https://github.com/QAHenryOliverEdwards) 
 
 ## Acknowledgements
 Thank you to all members of Team Storm: [Arsalan](https://github.com/QA-ArsalanAsad), [Raimonds](https://github.com/RaimondsMezalsQA) and [Henry](https://github.com/QAHenryOliverEdwards) for making the experience smooth and enjoyable. Working with these great developers only further expanded my knowledge and brought many laughs along the journey.
